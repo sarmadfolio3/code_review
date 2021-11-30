@@ -10,7 +10,7 @@ import { LOGIN_ROUTE } from "@/Constants/routeNames";
 import { Messages } from "@/Constants/messages";
 import SidePanel from "./SidePanel";
 const { Title } = Typography;
-
+ 
 const ResetPassword = ({ history }) => {
   const dispatch = useDispatch();
   const { search } = useLocation();

@@ -64,7 +64,6 @@ export const login = async (req, res) => {
             },
           ],
         });
-
         const token = sign(
           { id: response.id, email: response.email },
           process.env.JWT_ENCRYPTION_KEY,

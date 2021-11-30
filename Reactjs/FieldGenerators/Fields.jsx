@@ -1,7 +1,6 @@
 import React from "react";
 import { Form, Input, InputNumber, Select } from "antd";
 
-
 export default ({ columns, deleteRow }) => {
   let dataToReturn = [];
   dataToReturn.push({

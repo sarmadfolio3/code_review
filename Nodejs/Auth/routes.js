@@ -17,6 +17,7 @@ const router = Router();
 /* 
   *Auth Routes 
 */
+
 router.post("/login", login);
 router.post("/register", register);
 router.post("/forgot-password", forgotPassword);

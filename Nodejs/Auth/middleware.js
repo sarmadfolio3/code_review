@@ -8,6 +8,7 @@ import CONSTANTS from "@/utils/constants";
  * @param req, res, next
  * @returns {object}
  */
+
 export const isAuthorized = (req, res, next) => {
   if (!req.headers.token)
     return res
@@ -54,6 +55,7 @@ export const isAuthorized = (req, res, next) => {
  * @param req, res, next
  * @returns json response
  */
+
 export const checkResetPasswordLink = (req, res, next) => {
   if (!req.headers.tk)
     return res.json(
@@ -141,6 +143,7 @@ export const isAuthorizedToChangePassword = (req, res, next) => {
  * @param req, res, next
  * @returns json response
  */
+
 export const isAuthorizedServerRequest = (req, res, next) => {
   if (!req.headers.secret)
     return res

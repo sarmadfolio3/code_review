@@ -14,6 +14,7 @@ import { runPythonScript } from "@/python-scripts/run-scripts";
  * @param req, res
  * @returns {object}
  */
+
 export const gettAll = async (req, res) => {
   try {
     const documents = await Documents.findAll({
@@ -52,6 +53,7 @@ export const gettAll = async (req, res) => {
  * @param req, res
  * @returns {object}
  */
+
 export const create = async (req, res) => {
   let { user_id, type } = req.body;
   try {

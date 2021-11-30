@@ -7,7 +7,7 @@ import Notification from "../../Common/Notification";
 import { HIDE_NOTIFICATION } from "../../actions/Types";
 import SidePanel from "./SidePanel";
 const { Title } = Typography;
-
+ 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
