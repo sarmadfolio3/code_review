@@ -20,13 +20,13 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res
-      .status(403)
+      .status(CONSTANTS.STATUS_CODE.FORBIDDEN)
       .json(
         responseHandler(
           "failed",
           CONSTANTS.MESSAGES.MANDATORY_FIELDS,
           null,
-          403
+          CONSTANTS.STATUS_CODE.FORBIDDEN
         )
       );
   }
@@ -43,13 +43,13 @@ export const login = async (req, res) => {
     if (!_.isEmpty(response)) {
       if (decrypt_value(response.password) !== JSON.stringify(password)) {
         return res
-          .status(400)
+          .status(CONSTANTS.STATUS_CODE.FORBIDDEN)
           .json(
             responseHandler(
               "failed",
               CONSTANTS.MESSAGES.INVALID_CREDENTIALS,
               null,
-              400
+              CONSTANTS.STATUS_CODE.FORBIDDEN
             )
           );
       } else {
@@ -84,18 +84,25 @@ export const login = async (req, res) => {
             "success",
             CONSTANTS.MESSAGES.LOGIN_SUCCESS,
             data,
-            200
+            CONSTANTS.STATUS_CODE.OK
           )
         );
       }
     }
     return res
-      .status(404)
+      .status(CONSTANTS.STATUS_CODE.FORBIDDEN)
       .json(
-        responseHandler("failed", CONSTANTS.MESSAGES.USER_NOT_FOUND, null, 404)
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.USER_NOT_FOUND,
+          null,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
       );
   } catch (ex) {
-    return res.status(500).json(responseHandler("failed", ex));
+    return res
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(responseHandler("failed", ex));
   }
 };
 
@@ -110,13 +117,13 @@ export const forgotPassword = async (req, res) => {
     const response = await Users.findOne({ where: { email } });
     if (_.isEmpty(response))
       return res
-        .status(404)
+        .status(CONSTANTS.STATUS_CODE.FORBIDDEN)
         .json(
           responseHandler(
             "failed",
             CONSTANTS.MESSAGES.USER_NOT_FOUND,
             null,
-            404
+            CONSTANTS.STATUS_CODE.FORBIDDEN
           )
         );
     const token = sign(
@@ -140,10 +147,24 @@ export const forgotPassword = async (req, res) => {
       }
     );
     res.json(
-      responseHandler("success", CONSTANTS.MESSAGES.EMAIL_SENT, null, 200)
+      responseHandler(
+        "success",
+        CONSTANTS.MESSAGES.EMAIL_SENT,
+        null,
+        CONSTANTS.STATUS_CODE.OK
+      )
     );
   } catch (ex) {
-    return res.status(500).json(responseHandler("failed", ex, null, 500));
+    return res
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(
+        responseHandler(
+          "failed",
+          ex,
+          null,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };
 
@@ -183,7 +204,16 @@ export const verifyResetPasswordLink = async (req, res) => {
       }
     }
   } catch (ex) {
-    return res.status(500).json(responseHandler("failed", ex, null, 500));
+    return res
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(
+        responseHandler(
+          "failed",
+          ex,
+          null,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };
 
@@ -209,13 +239,13 @@ export const resetPassword = async (req, res) => {
     const response = await Users.findOne({ where: { email } });
     if (_.isEmpty(response))
       return res
-        .status(404)
+        .status(CONSTANTS.STATUS_CODE.NOT_FOUND)
         .json(
           responseHandler(
             "failed",
             CONSTANTS.MESSAGES.USER_NOT_FOUND,
             null,
-            404
+            CONSTANTS.STATUS_CODE.NOT_FOUND
           )
         );
     await response.update({
@@ -230,13 +260,23 @@ export const resetPassword = async (req, res) => {
       await responseResetToken.destroy();
     }
     res.json(
-      responseHandler("success", CONSTANTS.MESSAGES.PASSWORD_UPDATED, null, 200)
+      responseHandler(
+        "success",
+        CONSTANTS.MESSAGES.PASSWORD_UPDATED,
+        null,
+        CONSTANTS.STATUS_CODE.OK
+      )
     );
   } catch (ex) {
     return res
-      .status(500)
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
       .json(
-        responseHandler("failed", CONSTANTS.MESSAGES.INTERNAL_ERROR, null, 500)
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.INTERNAL_ERROR,
+          null,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
       );
   }
 };
@@ -253,13 +293,13 @@ export const changePassword = async (req, res) => {
     const response = await Users.findOne({ email });
     if (_.isEmpty(response))
       return res
-        .status(404)
+        .status(CONSTANTS.STATUS_CODE.NOT_FOUND)
         .json(
           responseHandler(
             "failed",
             CONSTANTS.MESSAGES.USER_NOT_FOUND,
             null,
-            404
+            CONSTANTS.STATUS_CODE.NOT_FOUND
           )
         );
     if (decrypt_value(response.password) !== JSON.stringify(oldPassword))
@@ -274,18 +314,25 @@ export const changePassword = async (req, res) => {
     await response.update({
       password: encrypt_value(newPassword),
     });
-    return res.json(
-      responseHandler("success", CONSTANTS.MESSAGES.PASSWORD_CHANGED, null, 200)
-    );
+    return res
+      .status(CONSTANTS.STATUS_CODE.OK)
+      .json(
+        responseHandler(
+          "success",
+          CONSTANTS.MESSAGES.PASSWORD_CHANGED,
+          null,
+          CONSTANTS.STATUS_CODE.OK
+        )
+      );
   } catch (ex) {
     return res
-      .status(500)
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
       .json(
         responseHandler(
           "failed",
           CONSTANTS.MESSAGES.SOMETHING_WENT_WRONG,
           null,
-          500
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
         )
       );
   }
@@ -304,9 +351,14 @@ export const register = async (req, res) => {
     });
     if (!_.isEmpty(isExists)) {
       return res
-        .status(403)
+        .status(CONSTANTS.STATUS_CODE.BAD_REQUEST)
         .json(
-          responseHandler("failed", CONSTANTS.MESSAGES.EMAIL_EXISTS, null, 403)
+          responseHandler(
+            "failed",
+            CONSTANTS.MESSAGES.EMAIL_EXISTS,
+            null,
+            CONSTANTS.STATUS_CODE.BAD_REQUEST
+          )
         );
     } else {
       const created = await Users.create({
@@ -334,16 +386,27 @@ export const register = async (req, res) => {
         email: created.email,
         organization_id: created.organization_id,
       };
-      return res.json(
-        responseHandler(
-          "success",
-          CONSTANTS.MESSAGES.REGISTER_SUCCESS,
-          data,
-          200
-        )
-      );
+      return res
+        .status(CONSTANTS.STATUS_CODE.OK)
+        .json(
+          responseHandler(
+            "success",
+            CONSTANTS.MESSAGES.REGISTER_SUCCESS,
+            data,
+            CONSTANTS.STATUS_CODE.OK
+          )
+        );
     }
   } catch (error) {
-    return res.status(500).json(responseHandler("failed", error, null, 500));
+    return res
+      .status(CONSTANTS.STATUS_CODE.BAD_REQUEST)
+      .json(
+        responseHandler(
+          "failed",
+          error,
+          null,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };

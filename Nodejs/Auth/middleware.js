@@ -11,15 +11,25 @@ import CONSTANTS from "@/utils/constants";
 export const isAuthorized = (req, res, next) => {
   if (!req.headers.token)
     return res
-      .status(401)
+      .status(CONSTANTS.STATUS_CODE.UNAUTHORIZED)
       .json(
-        responseHandler("failed", CONSTANTS.MESSAGES.UNAUTHORIZED, null, 401)
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.UNAUTHORIZED,
+          null,
+          CONSTANTS.STATUS_CODE.UNAUTHORIZED
+        )
       );
   if (isExpired(req.headers.token))
     return res
-      .status(401)
+      .status(CONSTANTS.STATUS_CODE.UNAUTHORIZED)
       .json(
-        responseHandler("failed", CONSTANTS.MESSAGES.TOKEN_EXPIRED, null, 401)
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.TOKEN_EXPIRED,
+          null,
+          CONSTANTS.STATUS_CODE.UNAUTHORIZED
+        )
       );
   if (verifyJWT(req.headers.token)) {
     req.body.email = decode(req.headers.token).email;
@@ -27,9 +37,14 @@ export const isAuthorized = (req, res, next) => {
     next();
   } else {
     return res
-      .status(401)
+      .status(CONSTANTS.STATUS_CODE.UNAUTHORIZED)
       .json(
-        responseHandler("failed", CONSTANTS.MESSAGES.UNAUTHORIZED, null, 401)
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.UNAUTHORIZED,
+          null,
+          CONSTANTS.STATUS_CODE.UNAUTHORIZED
+        )
       );
   }
 };
@@ -42,11 +57,21 @@ export const isAuthorized = (req, res, next) => {
 export const checkResetPasswordLink = (req, res, next) => {
   if (!req.headers.tk)
     return res.json(
-      responseHandler("failed", CONSTANTS.MESSAGES.UNAUTHORIZED, null, 401)
+      responseHandler(
+        "failed",
+        CONSTANTS.MESSAGES.UNAUTHORIZED,
+        null,
+        CONSTANTS.STATUS_CODE.UNAUTHORIZED
+      )
     );
   if (isExpired(req.headers.tk))
     return res.json(
-      responseHandler("failed", CONSTANTS.MESSAGES.TOKEN_EXPIRED, null, 401)
+      responseHandler(
+        "failed",
+        CONSTANTS.MESSAGES.TOKEN_EXPIRED,
+        null,
+        CONSTANTS.STATUS_CODE.UNAUTHORIZED
+      )
     );
   const tk = verifyJWT(req.headers.tk);
   if (tk) {
@@ -54,7 +79,12 @@ export const checkResetPasswordLink = (req, res, next) => {
     next();
   } else {
     return res.json(
-      responseHandler("failed", CONSTANTS.MESSAGES.UNAUTHORIZED, null, 401)
+      responseHandler(
+        "failed",
+        CONSTANTS.MESSAGES.UNAUTHORIZED,
+        null,
+        CONSTANTS.STATUS_CODE.UNAUTHORIZED
+      )
     );
   }
 };
@@ -68,15 +98,25 @@ export const checkResetPasswordLink = (req, res, next) => {
 export const isAuthorizedToChangePassword = (req, res, next) => {
   if (!req.headers.tk)
     return res
-      .status(401)
+      .status(CONSTANTS.STATUS_CODE.UNAUTHORIZED)
       .json(
-        responseHandler("failed", CONSTANTS.MESSAGES.UNAUTHORIZED, null, 401)
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.UNAUTHORIZED,
+          null,
+          CONSTANTS.STATUS_CODE.UNAUTHORIZED
+        )
       );
   if (isExpired(req.headers.tk))
     return res
-      .status(401)
+      .status(CONSTANTS.STATUS_CODE.UNAUTHORIZED)
       .json(
-        responseHandler("failed", CONSTANTS.MESSAGES.TOKEN_EXPIRED, null, 401)
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.TOKEN_EXPIRED,
+          null,
+          CONSTANTS.STATUS_CODE.UNAUTHORIZED
+        )
       );
   if (verifyJWT(req.headers.tk)) {
     req.body.email = decode(req.headers.tk).email;
@@ -84,9 +124,14 @@ export const isAuthorizedToChangePassword = (req, res, next) => {
     next();
   } else {
     return res
-      .status(401)
+      .status(CONSTANTS.STATUS_CODE.UNAUTHORIZED)
       .json(
-        responseHandler("failed", CONSTANTS.MESSAGES.UNAUTHORIZED, null, 401)
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.UNAUTHORIZED,
+          null,
+          CONSTANTS.STATUS_CODE.UNAUTHORIZED
+        )
       );
   }
 };
@@ -99,18 +144,28 @@ export const isAuthorizedToChangePassword = (req, res, next) => {
 export const isAuthorizedServerRequest = (req, res, next) => {
   if (!req.headers.secret)
     return res
-      .status(401)
+      .status(CONSTANTS.STATUS_CODE.UNAUTHORIZED)
       .json(
-        responseHandler("failed", CONSTANTS.MESSAGES.UNAUTHORIZED, null, 401)
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.UNAUTHORIZED,
+          null,
+          CONSTANTS.STATUS_CODE.UNAUTHORIZED
+        )
       );
 
   if (verifySecretKey(req.headers.secret)) {
     next();
   } else {
     return res
-      .status(401)
+      .status(CONSTANTS.STATUS_CODE.UNAUTHORIZED)
       .json(
-        responseHandler("failed", CONSTANTS.MESSAGES.UNAUTHORIZED, null, 401)
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.UNAUTHORIZED,
+          null,
+          CONSTANTS.STATUS_CODE.UNAUTHORIZED
+        )
       );
   }
 };

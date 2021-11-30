@@ -24,14 +24,26 @@ export const gettAll = async (req, res) => {
     });
 
     return res
-      .status(200)
+      .status(CONSTANTS.STATUS_CODE.OK)
       .json(
-        responseHandler("success", CONSTANTS.MESSAGES.SUCCESS, documents, 200)
+        responseHandler(
+          "success",
+          CONSTANTS.MESSAGES.SUCCESS,
+          documents,
+          CONSTANTS.STATUS_CODE.OK
+        )
       );
   } catch (ex) {
     return res
-      .status(500)
-      .json(responseHandler("failed", CONSTANTS.MESSAGES.FAILED, ex, 500));
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.FAILED,
+          ex,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };
 
@@ -45,9 +57,14 @@ export const create = async (req, res) => {
   try {
     if (!user_id || !type) {
       return res
-        .status(400)
+        .status(CONSTANTS.STATUS_CODE.BAD_REQUEST)
         .json(
-          responseHandler("failed", CONSTANTS.MESSAGES.FILL_ALL_FIELDS, "", 400)
+          responseHandler(
+            "failed",
+            CONSTANTS.MESSAGES.FILL_ALL_FIELDS,
+            "",
+            CONSTANTS.STATUS_CODE.BAD_REQUEST
+          )
         );
     } else {
       const created = await Documents.create({
@@ -56,13 +73,25 @@ export const create = async (req, res) => {
       });
 
       return res.json(
-        responseHandler("success", CONSTANTS.MESSAGES.SUCCESS, created, 200)
+        responseHandler(
+          "success",
+          CONSTANTS.MESSAGES.SUCCESS,
+          created,
+          CONSTANTS.STATUS_CODE.OK
+        )
       );
     }
   } catch (error) {
     return res
-      .status(500)
-      .json(responseHandler("failed", CONSTANTS.MESSAGES.FAILED, error, 500));
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.FAILED,
+          error,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };
 
@@ -77,13 +106,13 @@ export const uploadContractFile = async (req, res) => {
     let returnBody = [];
     if (req.body.length < 1) {
       return res
-        .status(400)
+        .status(CONSTANTS.STATUS_CODE.BAD_REQUEST)
         .json(
           responseHandler(
             "failed",
             CONSTANTS.MESSAGES.NO_FILE_SELECTED,
             "",
-            400
+            CONSTANTS.STATUS_CODE.BAD_REQUEST
           )
         );
     }
@@ -107,14 +136,26 @@ export const uploadContractFile = async (req, res) => {
       i++;
     } while (i < req.body.length);
     return res
-      .status(200)
+      .status(CONSTANTS.STATUS_CODE.OK)
       .json(
-        responseHandler("success", CONSTANTS.MESSAGES.SUCCESS, returnBody, 200)
+        responseHandler(
+          "success",
+          CONSTANTS.MESSAGES.SUCCESS,
+          returnBody,
+          CONSTANTS.STATUS_CODE.OK
+        )
       );
   } catch (ex) {
     return res
-      .status(500)
-      .json(responseHandler("failed", CONSTANTS.MESSAGES.FAILED, ex, 500));
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.FAILED,
+          ex,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };
 
@@ -128,13 +169,13 @@ export const uploadInvoiceFile = async (req, res) => {
     let returnBody = [];
     if (req.body.length < 1) {
       return res
-        .status(400)
+        .status(CONSTANTS.STATUS_CODE.BAD_REQUEST)
         .json(
           responseHandler(
             "failed",
             CONSTANTS.MESSAGES.NO_FILE_SELECTED,
             "",
-            400
+            CONSTANTS.STATUS_CODE.BAD_REQUEST
           )
         );
     }
@@ -159,14 +200,26 @@ export const uploadInvoiceFile = async (req, res) => {
     } while (i < req.body.length);
     runPythonScript("invoice");
     return res
-      .status(200)
+      .status(CONSTANTS.STATUS_CODE.OK)
       .json(
-        responseHandler("success", CONSTANTS.MESSAGES.SUCCESS, returnBody, 200)
+        responseHandler(
+          "success",
+          CONSTANTS.MESSAGES.SUCCESS,
+          returnBody,
+          CONSTANTS.STATUS_CODE.OK
+        )
       );
   } catch (ex) {
     return res
-      .status(500)
-      .json(responseHandler("failed", ConSTANTS.MESSAGES.FAILED, ex, 500));
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(
+        responseHandler(
+          "failed",
+          ConSTANTS.MESSAGES.FAILED,
+          ex,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };
 
@@ -180,13 +233,13 @@ export const uploadPO = async (req, res) => {
     let returnBody = [];
     if (req.body.length < 1) {
       return res
-        .status(400)
+        .status(CONSTANTS.STATUS_CODE.BAD_REQUEST)
         .json(
           responseHandler(
             "failed",
             CONSTANTS.MESSAGES.NO_FILE_SELECTED,
             "",
-            400
+            CONSTANTS.STATUS_CODE.BAD_REQUEST
           )
         );
     }
@@ -211,14 +264,26 @@ export const uploadPO = async (req, res) => {
     } while (i < req.body.length);
     runPythonScript("po");
     return res
-      .status(200)
+      .status(CONSTANTS.STATUS_CODE.OK)
       .json(
-        responseHandler("success", CONSTANTS.MESSAGES.SUCCESS, returnBody, 200)
+        responseHandler(
+          "success",
+          CONSTANTS.MESSAGES.SUCCESS,
+          returnBody,
+          CONSTANTS.STATUS_CODE.OK
+        )
       );
   } catch (ex) {
     return res
-      .status(500)
-      .json(responseHandler("failed", CONSTANTS.MESSAGES.FAILED, ex, 500));
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.FAILED,
+          ex,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };
 
@@ -235,19 +300,26 @@ export const getContractFile = async (req, res) => {
       `contracts/${req.params.key}`
     );
     return res
-      .status(200)
+      .status(CONSTANTS.STATUS_CODE.OK)
       .json(
         responseHandler(
           "success",
           CONSTANTS.MESSAGES.SIGNED_URL_SUCCESS,
           signedUrl,
-          200
+          CONSTANTS.STATUS_CODE.OK
         )
       );
   } catch (ex) {
     return res
-      .status(500)
-      .json(responseHandler("failed", CONSTANTS.MESSAGES.FAILED, ex, 500));
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.FAILED,
+          ex,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };
 
@@ -264,19 +336,26 @@ export const getPOfile = async (req, res) => {
       `purchase_orders/${req.params.key}`
     );
     return res
-      .status(200)
+      .status(CONSTANTS.STATUS_CODE.OK)
       .json(
         responseHandler(
           "success",
           CONSTANTS.MESSAGES.SIGNED_URL_SUCCESS,
           signedUrl,
-          200
+          CONSTANTS.STATUS_CODE.OK
         )
       );
   } catch (ex) {
     return res
-      .status(500)
-      .json(responseHandler("failed", CONSTANTS.MESSAGES.FAILED, ex, 500));
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.FAILED,
+          ex,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };
 
@@ -292,18 +371,25 @@ export const getInvoiceFile = async (req, res) => {
       `invoices/${req.params.key}`
     );
     return res
-      .status(200)
+      .status(CONSTANTS.STATUS_CODE.OK)
       .json(
         responseHandler(
           "success",
           CONSTANTS.MESSAGES.SIGNED_URL_SUCCESS,
           signedUrl,
-          200
+          CONSTANTS.STATUS_CODE.OK
         )
       );
   } catch (ex) {
     return res
-      .status(500)
-      .json(responseHandler("failed", CONSTANTS.MESSAGES.FAILED, ex, 500));
+      .status(CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json(
+        responseHandler(
+          "failed",
+          CONSTANTS.MESSAGES.FAILED,
+          ex,
+          CONSTANTS.STATUS_CODE.INTERNAL_SERVER_ERROR
+        )
+      );
   }
 };
