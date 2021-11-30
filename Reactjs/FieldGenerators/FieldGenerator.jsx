@@ -20,7 +20,7 @@ import {
 import { DeleteOutlined } from "@ant-design/icons";
 import { triggerNotification } from "@/actions/Creators";
 import { FIELD_TYPES } from "@/Constants/fieldTypes";
-
+ 
 export default (props) => {
   const { isDisabled } = props;
   const [tableData, setTableData] = useState([{}]);

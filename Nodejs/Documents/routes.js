@@ -15,6 +15,7 @@ const router = Router();
 /* 
   * Documents Routes
 */
+
 router.post("/documents/create", isAuthorized, create);
 router.get("/documents/getAll", isAuthorized, gettAll);
 router.post("/documents/contract/upload", isAuthorized, uploadContractFile);

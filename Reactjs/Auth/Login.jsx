@@ -11,7 +11,7 @@ import { HIDE_NOTIFICATION } from "@/actions/Types";
 import CONSTANTS from "@/Constants/constants";
 import "./Login.scss";
 import { FORGOT_PASSWORD_ROUTE } from "../../../Constants/routeNames";
-
+ 
 const Login = () => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({

@@ -2,7 +2,7 @@ import React from "react";
 import Login_logo from "../../assets/images/bg-login-splash.png";
 import AppLogo from "../../assets/images/app-logo-white.png";
 import { Row, Col, Typography, Image } from "antd";
-
+ 
 const SidePanel = ({ children }) => {
   const { Title } = Typography;
   return (
